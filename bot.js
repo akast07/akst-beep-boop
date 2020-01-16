@@ -1,7 +1,6 @@
 let Discord = require('discord.io');
 let logger = require('winston');
 let auth = require('./auth.json');
-require('./keepOnline.js')
 
 //logger settings 
 logger.remove(logger.transports.Console);
