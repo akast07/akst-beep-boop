@@ -1,6 +1,5 @@
 let dotenv = require('dotenv').config();
 let logger = require('winston');
-let auth = require('./auth.json');
 const Discord = require('discord.js');
 //initialize bot
 const client = new Discord.Client();
