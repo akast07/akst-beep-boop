@@ -15,6 +15,8 @@ let bot = new Discord.Client({
     autorun:true
 });
 
+bot.login(process.env.TOKEN);
+
 console.log(bot);
 
 bot.on('on_error',(evt) => {
