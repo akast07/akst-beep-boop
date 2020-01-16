@@ -16,16 +16,34 @@ let bot = new Discord.Client({
     autorun:true
 });
 
-bot.on('ready', function(evt){
+console.log(bot);
+
+bot.on('on_error',(evt) => {
+    logger.info("-----Error time-----");
+    logger.info(bot);
+});
+
+bot.on('login',(evt) => {
+    console.log('inside login');
+});
+
+bot.on('ready', (evt) => {
     logger.info('**Connected**');
     logger.info('Logged in as: ');
     logger.info(bot.username+'-('+bot.id+')');
 });
 
-bot.on('message', function (user, userID, channelID, message, evt) {
+bot.on('message', (user, userID, channelID, message, evt) => {
 
     if (message.content != null) {
         
+        if (message.member.voiceChannel) {
+            const channel = message.member.voiceChannel;
+            channel.join()
+            .then(connection => console.log('Connected!'))
+            .catch(console.error);
+            }
+
         switch(message) {
             // !ping
             case 'ping':
