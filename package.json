@@ -1,0 +1,13 @@
+{
+  "name": "akst-bot",
+  "version": "1.0.0",
+  "description": "bip",
+  "main": "bot.js",
+  "author": "akast",
+  "dependencies": {
+    "discord.io": "",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "winston": "^3.2.1"
+  }
+}
