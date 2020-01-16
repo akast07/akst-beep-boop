@@ -1,3 +1,2 @@
 // Procfile
-
-web: npm start -Dserver.port=$PORT
+worker: node bot.js
