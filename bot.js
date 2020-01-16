@@ -23,7 +23,4 @@ client.on('message', message => {
     }
 });
 
-//run locally
-//client.login(process.env.token);
-//run on the cloud
-client.login(ENV['Token']);
+client.login(process.env.TOKEN);
