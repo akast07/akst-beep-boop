@@ -1,6 +1,8 @@
 let Discord = require('discord.io');
 let logger = require('winston');
 let auth = require('./auth.json');
+let dotenv = require('dotenv').config();
+
 
 //logger settings 
 logger.remove(logger.transports.Console);
@@ -11,13 +13,10 @@ logger.level = 'debug';
 
 //initialize bot
 let bot = new Discord.Client({
-    token: process.env.token,
-    autorun:true
+    "token":process.env.token,
+    "status":"dnd",
+    "afk":false
 });
-
-bot.login(process.env.TOKEN);
-
-console.log(bot);
 
 bot.on('on_error',(evt) => {
     logger.info("-----Error time-----");

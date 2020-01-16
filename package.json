@@ -5,7 +5,7 @@
   "main": "bot.js",
   "author": "akast",
   "scripts": {
-    "start": "node ./bot.js",
+    "start": "node bot.js",
     "build": "node bot.js",
     "test": "standard"
   },
