@@ -6,6 +6,7 @@
   "start": "webpack-dev-serve --hot",
   "author": "akast",
   "scripts": {
+    "start": "node bot.js",
     "build": "node bot.js",
     "test": "standard"
   },
