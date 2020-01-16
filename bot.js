@@ -1,4 +1,4 @@
-let dotenv = require('dotenv').config();
+let dotenv = require('dotenv');
 let logger = require('winston');
 const Discord = require('discord.js');
 //initialize bot
@@ -19,4 +19,6 @@ client.on('message', message => {
         });
     }
 });
-client.login(process.env.TOKEN);
+const TOKEN = process.env.TOKEN;
+
+client.login(TOKEN);
