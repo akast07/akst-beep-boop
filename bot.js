@@ -9,10 +9,9 @@ logger.add(new logger.transports.Console(),{
 });
 logger.level = 'debug';
 
-
 //initialize bot
 let bot = new Discord.Client({
-    token:auth.token,
+    token: process.env.token,
     autorun:true
 });
 
@@ -23,9 +22,12 @@ bot.on('on_error',(evt) => {
     logger.info(bot);
 });
 
-bot.on('login',(evt) => {
-    console.log('inside login');
-});
+process.on('uncaughtException', function(error) {
+    // do something clever here
+    logger.info("-----Error time-----");
+    logger.info(bot);
+  });
+
 
 bot.on('ready', (evt) => {
     logger.info('**Connected**');
