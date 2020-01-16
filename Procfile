@@ -1,3 +1,3 @@
 // Procfile
 
-web: `npm start -Dserver.port=$PORT`
+web: npm start -Dserver.port=$PORT
