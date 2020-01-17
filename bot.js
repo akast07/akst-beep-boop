@@ -73,7 +73,7 @@ client.on('message', message => {
         };
         //dailogflow setup
         runSample(messageText);
-            }
+    }
 });
 
 const TOKEN = process.env.TOKEN;
@@ -98,9 +98,9 @@ app.listen(port, (err) => {
     if(err) throw err;
 });
 
-// keepAlive({
-//     time:30,
-//     callback: function(error, response, body) {
-//         console.log('still alive');
-//       }
-// },app);
+keepAlive({
+    time:30,
+    callback: function(error, response, body) {
+        console.log('still alive');
+      }
+},app);
