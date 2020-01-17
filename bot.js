@@ -44,7 +44,7 @@ client.on('message', message => {
                 }
             };
             const sessionClient = new dialogflow.SessionsClient(config);
-            const sessionPath = sessionClient.sessionPath(process.env.ProjecttId, sessionId);
+            const sessionPath = sessionClient.sessionPath(process.env.ProjectId, sessionId);
             const dialogFlowReq = {
                 session: sessionPath,
                 queryInput: {
