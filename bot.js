@@ -31,12 +31,12 @@ client.on('message', message => {
 
     //parse message
     switch(message.content.indexOf('?') === 0){
-        case 'ping':
+        case messageText = 'ping':
             message.channel.send('Pinging...').then((msg)=>{
             message.edit("Ping: " + (Date.now() - msg.createdTimestamp));
             });
             break;
-        case '?':
+        case messageText = '?':
             //some ol' bull
             message.channel.send('You only need one question mark');
             break;
