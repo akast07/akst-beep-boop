@@ -26,17 +26,15 @@ client.on('message', message => {
     //robots dont talk to themselves
     if(message.author.bot) return;
 
-    let general36byteHash =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     let messageText = message.content.substring(1);
-
     //parse message
     switch(message.content.indexOf('?') === 0){
-        case messageText = 'ping':
+        case messageText == 'ping':
             message.channel.send('Pinging...').then((msg)=>{
             message.edit("Ping: " + (Date.now() - msg.createdTimestamp));
             });
             break;
-        case messageText = '?':
+        case messageText == '?':
             //some ol' bull
             message.channel.send('You only need one question mark');
             break;
