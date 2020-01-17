@@ -5,6 +5,7 @@
   "main": "bot.js",
   "author": "akast",
   "scripts": {
+    "postinstall": "npm run build",
     "start": "node bot.js",
     "build": "node bot.js",
     "test": "standard"
