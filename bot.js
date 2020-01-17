@@ -60,10 +60,10 @@ client.on('message', message => {
                 };
             
             const dailogRes = await sessionClient.detectIntent(dialogFlowReq);
-            console.log('intent detected');
+            message.channel.send('intent detected');
             const result = dailogRes[0].queryResult;
-            console.log(`  Query: ${result.queryText}`);
-            console.log(`  Response: ${result.fulfillmentText}`);
+            message.channel.send(`  Query: ${result.queryText}`);
+            message.channel.send(`  Response: ${result.fulfillmentText}`);
             if (result.intent) {
             message.channel.send(`  Intent: ${result.intent.displayName}`);
             } else {
