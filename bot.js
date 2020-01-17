@@ -44,7 +44,7 @@ client.on('message', message => {
                 }
             };
             const sessionClient = new dialogflow.SessionsClient(config);
-            const sessionPath = sessionClient.sessionPath(process.env.PROJECTID, sessionId);
+            const sessionPath = sessionClient.sessionPath(process.env.ProjecttId, sessionId);
             const dialogFlowReq = {
                 session: sessionPath,
                 queryInput: {
@@ -97,7 +97,7 @@ client.login(TOKEN).catch((err) =>{
 app.get('/',()=>{
     res.sendFile(`google11b051fd7dcd2c7e.html`);
 });
-var port = process.env.PORT || 3000;
+var port = $PORT || 3000;
 app.listen(port, () => {
     console.log(`Our app is running on port ${ port }`);
 });
