@@ -93,10 +93,11 @@ client.login(TOKEN).catch((err) =>{
     console.log(err);
 });
 
-const PORT = process.env.PORT || 3000;
+
 app.get('/',()=>{
     res.sendFile(`google11b051fd7dcd2c7e.html`);
 });
-app.listen(PORT, () => {
-    console.log(`Our app is running on port ${ PORT }`);
+var port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Our app is running on port ${ port }`);
 });
