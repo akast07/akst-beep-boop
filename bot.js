@@ -7,12 +7,7 @@ const sessionId = uuid.v4();
 let express = require('express');
 let app = express();
 let keepAlive = require("node-keepalive");
-keepAlive({
-    time:30,
-    callback: function(error, response, body) {
-        console.log('still alive');
-      }
-},app);
+
 
 //initialize bot
 const client = new Discord.Client();
@@ -31,7 +26,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
     let messageText = message.content.substring(1);
-    if(messageText == null) return;
+    if(messageText == null) return; //empty queries
 
     //robots dont talk to themselves
     if(message.author.bot){
@@ -92,10 +87,20 @@ app.get('/',()=>{
 });
 
 let port = process.env.PORT || '0.0.0.0';
+app.set('PORT',port);
+
+console.log(process.env.PORT);
 console.log(port);
 
-app.listen(port, (req,res,err) => {
+app.listen(port, (err) => {
     console.log("%c Server running", "color: green");
     console.log(`Our app is running on port ${ port } or `);
     if(err) throw err;
 });
+
+// keepAlive({
+//     time:30,
+//     callback: function(error, response, body) {
+//         console.log('still alive');
+//       }
+// },app);
