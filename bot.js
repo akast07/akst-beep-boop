@@ -68,27 +68,12 @@ client.on('message', message => {
                 //message.channel.send(`  No intent matched.`);
             }
         };
-
-                    //dailogflow setup
-                    runSample(messageText);
-
-                // case messageText == 'help':
-                //     message.channel.send(' commands : help, ping, talk to the bot ai ');
-                //     break;
-                // case messageText == 'ping':
-                //     message.channel.send('Pinging...').then((msg) => {
-                //         msg.edit("Ping: " + (Date.now() - msg.createdTimestamp));
-                //     });
-                //     break;
-                // case messageText == '?':
-                //     //some ol' bull
-                //     message.channel.send('You only need one question mark');
-                //     break;
+        //dailogflow setup
+        runSample(messageText);
             }
 });
 
 const TOKEN = process.env.TOKEN;
-console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 client.login(TOKEN).catch((err) =>{
     console.log(err);
 });
