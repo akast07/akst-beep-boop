@@ -6,6 +6,13 @@ const uuid = require('uuid');
 const sessionId = uuid.v4();
 let express = require('express');
 let app = express();
+let keepAlive = require("node-keepalive");
+keepAlive({
+    time:30,
+    callback: function(error, response, body) {
+        console.log(error, response, body);
+      }
+},app);
 //Dialogflow API Admin
 //initialize bot
 const client = new Discord.Client();
@@ -83,6 +90,6 @@ app.get('/',()=>{
     res.sendFile(`google11b051fd7dcd2c7e.html`);
 });
 var port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Our app is running on port ${ port }`);
+let listener = app.listen(port, () => {
+    console.log(`Our app is running on port ${ port } or `+listener.address().port);
 });

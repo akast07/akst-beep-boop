@@ -17,6 +17,7 @@
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "node-keepalive": "0.0.1",
     "opusscript": "0.0.7",
     "uuid": "^3.4.0",
     "winston": "^3.2.1"
