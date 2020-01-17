@@ -29,7 +29,7 @@ client.on('message', message => {
     let messageText = message.content.substring(1);
     //parse message
     switch(message.content.indexOf('?') === 0){
-        case messageText = 'help':
+        case messageText == 'help':
             message.channel.send(' commands : help, ping, talk to the bot ai ');
         case messageText == 'ping':
             message.channel.send('Pinging...').then((msg)=>{
