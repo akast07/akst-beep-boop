@@ -4,7 +4,9 @@ const Discord = require('discord.js');
 let dialogflow = require('dialogflow').v2beta1;
 const uuid = require('uuid');
 const sessionId = uuid.v4();
-
+let express = require('express');
+let app = express();
+//Dialogflow API Admin
 //initialize bot
 const client = new Discord.Client();
 //logger settings 
@@ -15,7 +17,6 @@ const client = new Discord.Client();
 // logger.level = 'debug';
 //dotenv check
 if(dotenv.error){ throw result.error;}
-
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -87,6 +88,12 @@ client.on('message', message => {
 });
 
 const TOKEN = process.env.TOKEN;
+console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 client.login(TOKEN).catch((err) =>{
     console.log(err);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
 });
