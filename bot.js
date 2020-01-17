@@ -31,6 +31,7 @@ client.on('message', message => {
     switch(message.content.indexOf('?') === 0){
         case messageText == 'help':
             message.channel.send(' commands : help, ping, talk to the bot ai ');
+            break;
         case messageText == 'ping':
             message.channel.send('Pinging...').then((msg)=>{
             message.edit("Ping: " + (Date.now() - msg.createdTimestamp));
@@ -71,7 +72,7 @@ client.on('message', message => {
             } else {
             message.channel.send(`  No intent matched.`);
             }
-        };
+            };
             break;
     }
 });
