@@ -29,9 +29,13 @@ client.on('message', message => {
     let messageText = message.content.substring(1);
     //parse message
     switch(message.content.indexOf('?') === 0){
+        case messageText = 'help':
+            message.channel.send(' commands : help, ping, talk to the bot ai ');
         case messageText == 'ping':
             message.channel.send('Pinging...').then((msg)=>{
             message.edit("Ping: " + (Date.now() - msg.createdTimestamp));
+            }).catch((err)=>{
+                message.channel.send('------errors here:----- \n'+err);
             });
             break;
         case messageText == '?':
@@ -42,7 +46,7 @@ client.on('message', message => {
             //dailogflow setup
         async function runSample(projectid = process.env.projectid){
             const sessionClient = new dialogflow.SessionsClient();
-            const sessionPath = sessionClient.sesionPath(process.env.projectid,sessionId);
+            const sessionPath = sessionClient.sesionPath(projectid,sessionId);
 
                 // The text query request.
                 const dialogFlowReq = {
