@@ -35,6 +35,39 @@ client.on('message', message => {
     //parse message
     if(message.content.indexOf('?') === 0){
 
+        async function runSample(messageText){
+            let config ={
+                credentials:{
+                    private_key: process.env.PRIVATE_KEY,
+                    client_email: process.env.CLIENT_EMAIL
+                }
+            };
+            const sessionClient = new dialogflow.SessionsClient(config);
+            const sessionPath = sessionClient.sessionPath(process.env.PROJECTID, sessionId);
+            const dialogFlowReq = {
+                session: sessionPath,
+                queryInput: {
+                    text: {
+                        // The query to send to the dialogflow agent
+                        text: messageText,
+                        // The language used by the client (en-US)
+                        languageCode: 'en-US',
+                    },
+                },
+            };
+            
+            const dailogRes = await sessionClient.detectIntent(dialogFlowReq);
+            //message.channel.send('intent detected');
+            const result = dailogRes[0].queryResult;
+            //message.channel.send(`  Query: ${result.queryText}`);
+            message.channel.send(`${result.fulfillmentText}`);
+            if (result.intent) {
+                //message.channel.send(`  Intent: ${result.intent.displayName}`);
+            } else {
+                //message.channel.send(`  No intent matched.`);
+            }
+        };
+
                     //dailogflow setup
                     runSample(messageText);
 
@@ -53,38 +86,6 @@ client.on('message', message => {
             }
 });
 
-async function runSample(messageText){
-    let config ={
-        credentials:{
-            private_key:process.env.PRIVATE_KEY,
-            client_email: process.env.client_email
-        }
-    }
-    const sessionClient = new dialogflow.SessionsClient(config);
-    const sessionPath = sessionClient.sessionPath(process.env.projectid, sessionId);
-    const dialogFlowReq = {
-        session: sessionPath,
-        queryInput: {
-            text: {
-                // The query to send to the dialogflow agent
-                text: messageText,
-                // The language used by the client (en-US)
-                languageCode: 'en-US',
-            },
-        },
-    };
-    
-    const dailogRes = await sessionClient.detectIntent(dialogFlowReq);
-    message.channel.send('intent detected');
-    const result = dailogRes[0].queryResult;
-    message.channel.send(`  Query: ${result.queryText}`);
-    message.channel.send(`  Response: ${result.fulfillmentText}`);
-    if (result.intent) {
-        message.channel.send(`  Intent: ${result.intent.displayName}`);
-    } else {
-        message.channel.send(`  No intent matched.`);
-    }
-};
 const TOKEN = process.env.TOKEN;
 client.login(TOKEN).catch((err) =>{
     console.log(err);
