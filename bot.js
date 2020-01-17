@@ -97,7 +97,7 @@ client.login(TOKEN).catch((err) =>{
 app.get('/',()=>{
     res.sendFile(`google11b051fd7dcd2c7e.html`);
 });
-var port = PORT || 3000;
+var port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Our app is running on port ${ port }`);
 });
