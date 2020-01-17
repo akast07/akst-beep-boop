@@ -10,10 +10,10 @@ let keepAlive = require("node-keepalive");
 keepAlive({
     time:30,
     callback: function(error, response, body) {
-        console.log(error, response, body);
+        console.log('still alive');
       }
 },app);
-//Dialogflow API Admin
+
 //initialize bot
 const client = new Discord.Client();
 //logger settings 
@@ -28,6 +28,7 @@ if(dotenv.error){ throw result.error;}
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
+
 client.on('message', message => {
     let messageText = message.content.substring(1);
     if(messageText == null) return;
@@ -89,7 +90,12 @@ client.login(TOKEN).catch((err) =>{
 app.get('/',()=>{
     res.sendFile(`google11b051fd7dcd2c7e.html`);
 });
-var port = process.env.PORT || 3000;
-let listener = app.listen(port, () => {
-    console.log(`Our app is running on port ${ port } or `+listener.address().port);
+
+let port = process.env.PORT || '0.0.0.0';
+console.log(port);
+
+app.listen(port, (req,res,err) => {
+    console.log("%c Server running", "color: green");
+    console.log(`Our app is running on port ${ port } or `);
+    if(err) throw err;
 });
