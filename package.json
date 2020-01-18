@@ -1,9 +1,9 @@
 {
   "name": "akst-bot",
   "version": "1.0.0",
-  "engines":{
-    "node":"12.14.1",
-    "npm":"6.13.6"
+  "engines": {
+    "node": "12.14.1",
+    "npm": "6.13.6"
   },
   "description": "bip",
   "main": "bot.js",
@@ -17,6 +17,8 @@
   "dependencies": {
     "@discordjs/uws": "^10.149.0",
     "@magenta/music": "^1.12.0",
+    "@tensorflow/tfjs": "^1.5.1",
+    "@tensorflow/tfjs-node": "^1.5.1",
     "dialogflow": "^1.1.1",
     "discord.io": "^2.5.3",
     "discord.js": "^11.5.1",
@@ -25,6 +27,7 @@
     "node-keepalive": "0.0.1",
     "opusscript": "0.0.7",
     "redis": "^2.8.0",
+    "synth-js": "^0.1.1",
     "uuid": "^3.4.0",
     "winston": "^3.2.1"
   },

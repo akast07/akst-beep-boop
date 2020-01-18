@@ -1,12 +1,18 @@
 !<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <link rel = "stylesheet" type = "text/css" href = "./css/multiTrackStyling.css" />
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,700" rel="stylesheet">
     <!-- Load @magenta/music -->
-    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.0.0"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/music@^1.0.0"></script>
+    <link type="script" src="./js/multiTrackChords.js"> 
   </head>
   <body>
       <button onclick="play()"><h1>Play Trio</h1></button>
-
+      <!--https://docs.widgetbot.io/embed/crate/examples/-->
       <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
         const button = new Crate({
           server: '299881420891881473',
@@ -27,5 +33,15 @@
           button.options.location = ['bottom', button.options.location[1] === 'left' ? 'right' : 'left']
         }, 1000)
       </script>
+
+<p><b>Chord progression: </b>
+  <span id="chordsContainer" disabled>
+    <input id="chord1" type="text" value="Dm">
+    <input id="chord2" type="text" value="F">
+    <input id="chord3" type="text" value="Am">
+    <input id="chord4" type="text" value="G">
+  </span>
+  <button id="changeChords">Change</button>
+</p>
     </body>
 </html>

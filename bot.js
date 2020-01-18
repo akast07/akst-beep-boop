@@ -1,4 +1,7 @@
+//---------global--------------
 let dotenv = require('dotenv').config();
+const fs = require('fs');
+let path = require('path');
 let logger = require('winston');
 const Discord = require('discord.js');
 //-----gooogle dialog
@@ -6,12 +9,19 @@ let dialogflow = require('dialogflow').v2beta1;
 //------random 32byte hash
 const uuid = require('uuid');
 const sessionId = uuid.v4();
-//----webapp
+//----webapp-------
 let express = require('express');
 let app = express();
 let keepAlive = require("node-keepalive");
 //let redClient = require('redis').createClient(process.env.REDIS_URL);
 
+//---------magenta-------
+const mv = require('@magenta/music/node/music_vae');
+const model = new mv.MusicVAE('https://goo.gl/magenta/js-checkpoints');
+const multiTrackChords = require('./js/multiTrackChords.js');
+//----------synth midi to wav-----
+const synth = require('synth-js');
+//-------------------------------------------------------------------
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 //initialize bot
@@ -32,26 +42,57 @@ client.on('ready', () => {
 
 client.on('message', message => {
     let messageText = message.content.substring(1);
-    if(messageText == null) return; //empty queries
+    if (messageText == null) return; //empty queries
 
-    //robots dont talk to themselves
-    if(message.author.bot){
+    //---bot check----
+    if (message.author.bot) {
         return;
     }
-    if(message.author.id === client.user.id){
+    if (message.author.id === client.user.id) {
         return;
-    } 
+    }
+
+    //if help show options
 
     //read message, post response
-    if(message.content.indexOf('?') === 0){
-        //all text flow currently goes through runSample
-        //dailogflow query
-        let result = runSample(messageText);
+    if (message.content.indexOf('?') === 0) {
+        //music parse or e.g. ??(bpm=95(4/4)Ebmaj7/2 - Dbsus9/2 -Bmaj7/4)
+        if ((message.content.indexOf('?') === 1) && (message.content.indexOf('(') === 2)) {
+            //breakdown the rest of the musical string
+            let bpm;
+            let timeSignature;
+            let intervalDescription;
 
-        //populate embed
-        let exampleEmbed = populateEmbed(result);
-        console.log("example response api : \n"+ exampleEmbed);
-        message.channel.send(exampleEmbed);
+            //-------melody test ----------
+            let MELODY1 = { notes: [
+                {pitch: toMidi('A3','C#3','G#3'), quantizedStartStep: 0, quantizedEndStep: 4}, //0 to 4 beats
+                {pitch: toMidi('D4'), quantizedStartStep: 4, quantizedEndStep: 6}, //4 - 6
+                {pitch: toMidi('E4'), quantizedStartStep: 6, quantizedEndStep: 8},  //etc
+                {pitch: toMidi('F4'), quantizedStartStep: 8, quantizedEndStep: 10}, 
+                {pitch: toMidi('D4'), quantizedStartStep: 10, quantizedEndStep: 12},
+                {pitch: toMidi('E4'), quantizedStartStep: 12, quantizedEndStep: 16},
+                {pitch: toMidi('C4'), quantizedStartStep: 16, quantizedEndStep: 20},
+                {pitch: toMidi('D4'), quantizedStartStep: 20, quantizedEndStep: 26},
+                {pitch: toMidi('A3'), quantizedStartStep: 26, quantizedEndStep: 28},
+                {pitch: toMidi('A3'), quantizedStartStep: 28, quantizedEndStep: 32}
+            ]};
+
+            midi2Wave(midiFile);
+
+        }
+        else {
+            //dailogflow query
+            runSample(messageText).then((res) => {
+                console.log(res);
+                let exampleEmbed = populateEmbed(res);
+                message.channel.send(exampleEmbed);
+            });
+            /*
+            //populate embed
+            let exampleEmbed = populateEmbed(result);
+            message.channel.send(exampleEmbed);
+            */
+        }
     }
 });
 
@@ -101,53 +142,46 @@ async function runSample(messageText){
 
     //---------embed population
     function populateEmbed(result){
-        console.log(result);
+        console.log(''+result+'');
         //----------embedding formatting
         // inside a command, event listener, etc.
         //------color,title,url,author,description,thumbnail,addfield,setThumbnail, addfield, addblankfield,add infield field, setimage, setimestamp, set footer-------------
         let exampleEmbed = new Discord.RichEmbed()
-        .setColor('#0099ff')
-        .setTitle('Some title')
-        .setURL('https://discord.js.org/')
-        .setAuthor('Some name', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
-        .setDescription('Some description here')
-        .setThumbnail('https://i.imgur.com/wSTFkRM.png')
-        .addField('Regular field title', 'Some value here')
-        .addBlankField()
-        .addField('Inline field title', 'Some value here', true)
-        .addField('Inline field title', 'Some value here', true)
-        .addField('Inline field title', 'Some value here', true)
-        .setImage('https://i.imgur.com/wSTFkRM.png')
-        .setTimestamp()
-        .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+        .setColor('#00ffaa')
+        .setTitle(`${result.fulfillmentText}`)
+        //.setURL('https://discord.js.org/')
+        //.setAuthor(`${result.}`, 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+        .setDescription(`question : ${result.queryText}`)
+        //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
+        //.addField('Regular field title', 'Some value here')
+        //.addBlankField()
+        //.addField('DIALOG RESPONSE :', , true)
+        //.addField('INTENT : ',`${result.intent.displayName}`, true)
+        //.addField('Inline field title', 'Some value here', true)
+        //.setImage('https://i.imgur.com/wSTFkRM.png')
+        //.attachFile()
+        .setTimestamp();
+        //.setFooter('2020', 'https://i.imgur.com/wSTFkRM.png');
 
         return exampleEmbed;
     }
 
-//--------magenta music ; webpage until widget
-/*
-const model = require('@magenta/music/node/music_vae');
-const core = require('@magenta/music/node/core');
- 
-// These hacks below are needed because the library uses performance and fetch which
-// exist in browsers but not in node. We are working on simplifying this!
-const globalAny:any = global;
-globalAny.performance = Date;
-globalAny.fetch = require('node-fetch');
- 
-// Your code:
-const model = new mode.MusicVAE('/path/to/checkpoint');
-const player = new core.Player();
-model
-  .initialize()
-  .then(() => model.sample(1))
-  .then(samples => {
-    player.resumeContext();
-    player.start(samples[0])
-  });
-*/
+//-------- music----------
 
+let midi2Wave = (midiFile) =>{
 
+    let midiBuffer = fs.readFileSync(midiFile);
+    let wavBuffer = synth.midiToWav(midiBuffer).toBuffer();    // convert midi buffer to wav buffer
+
+    //instead of writing locally write to the db
+    fs.writeFileSync(path.basename+".wav", wavBuffer, {encoding: 'binary'});
+}
+
+//parse message text to Chord progression
+let textParseChord = () =>{
+}
+
+//------webpage----------
 let port = process.env.PORT || '0.0.0.0';
 app.set('port',port);
 
