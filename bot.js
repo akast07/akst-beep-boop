@@ -10,7 +10,7 @@ const sessionId = uuid.v4();
 let express = require('express');
 let app = express();
 let keepAlive = require("node-keepalive");
-let redClient = require('redis').createClient(process.env.REDIS_URL);
+//let redClient = require('redis').createClient(process.env.REDIS_URL);
 
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
@@ -46,7 +46,12 @@ client.on('message', message => {
     if(message.content.indexOf('?') === 0){
         //all text flow currently goes through runSample
         //dailogflow query
-        runSample(messageText);
+        let result = runSample(messageText);
+
+        //populate embed
+        let exampleEmbed = populateEmbed(result);
+        console.log("example response api : \n"+ exampleEmbed);
+        message.channel.send(exampleEmbed);
     }
 });
 
@@ -85,9 +90,7 @@ async function runSample(messageText){
 
     //-->>message.channel.send(`${result.fulfillmentText}`);
     
-    //populate embed
-    let exampleEmbed = populateEmbed(result);
-    channel.send(exampleEmbed);
+    return result;
 
     if (result.intent) {
         //message.channel.send(`  Intent: ${result.intent.displayName}`);
@@ -98,6 +101,7 @@ async function runSample(messageText){
 
     //---------embed population
     function populateEmbed(result){
+        console.log(result);
         //----------embedding formatting
         // inside a command, event listener, etc.
         //------color,title,url,author,description,thumbnail,addfield,setThumbnail, addfield, addblankfield,add infield field, setimage, setimestamp, set footer-------------
@@ -150,21 +154,16 @@ app.set('port',port);
 console.log(process.env.PORT);
 console.log(port);
 
-app.listen(port, (err) => {
-    console.log("%c Server running", "color: green");
-    console.log(`Our app is running on port ${ port } or `);
-    if(err) throw err;
-});
-
 app.get('/',(req,res)=>{
     console.log("app is running");
     res.sendFile('google11b051fd7dcd2c7e.html',{root:__dirname});
 }).listen(app.get('port'),function(){
+    console.log("%c Server running", "color: green");
     console.log('app is running server is listening on port',app.get('port'))
 });
 
 keepAlive({
-    time:30,
+    time:90, //in minutes?
     callback: function(error, response, body) {
         console.log('still alive');
       }
