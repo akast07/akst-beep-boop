@@ -15,10 +15,6 @@ let app = express();
 let keepAlive = require("node-keepalive");
 //let redClient = require('redis').createClient(process.env.REDIS_URL);
 
-//---------magenta-------
-const mv = require('@magenta/music/node/music_vae');
-const model = new mv.MusicVAE('https://goo.gl/magenta/js-checkpoints');
-const multiTrackChords = require('./js/multiTrackChords.js');
 //----------synth midi to wav-----
 const synth = require('synth-js');
 //-------------------------------------------------------------------
@@ -77,7 +73,7 @@ client.on('message', message => {
                 {pitch: toMidi('A3'), quantizedStartStep: 28, quantizedEndStep: 32}
             ]};
 
-            midi2Wave(midiFile);
+            //midi2Wave(midiFile);
 
         }
         else {
