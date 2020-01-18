@@ -12,6 +12,7 @@ let app = express();
 let keepAlive = require("node-keepalive");
 let redClient = require('redis').createClient(process.env.REDIS_URL);
 
+app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 //initialize bot
 const client = new Discord.Client();
