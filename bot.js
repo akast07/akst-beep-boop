@@ -142,12 +142,10 @@ model
     player.start(samples[0])
   });
 */
-app.get('/',(req,res)=>{
-    res.sendFile('google11b051fd7dcd2c7e.html',{root:__dirname});
-});
+
 
 let port = process.env.PORT || '0.0.0.0';
-app.set('PORT',port);
+app.set('port',port);
 
 console.log(process.env.PORT);
 console.log(port);
@@ -156,6 +154,13 @@ app.listen(port, (err) => {
     console.log("%c Server running", "color: green");
     console.log(`Our app is running on port ${ port } or `);
     if(err) throw err;
+});
+
+app.get('/',(req,res)=>{
+    console.log("app is running");
+    res.sendFile('google11b051fd7dcd2c7e.html',{root:__dirname});
+}).listen(app.get('port'),function(){
+    console.log('app is running server is listening on port',app.get('port'))
 });
 
 keepAlive({
