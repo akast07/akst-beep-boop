@@ -162,16 +162,15 @@ let textParseChord = () =>{
 
 //------webpage----------
 let port = process.env.PORT;
-app.set('port',port);
-
-console.log(process.env.PORT);
-console.log(port);
+// app.set('port',port);
+// console.log(process.env.PORT);
+// console.log(port);
 
 app.get('/',(req,res)=>{
     console.log("app is running");
     res.sendFile(path.join(__dirname + '/index.html'));
 
-}).listen(app.get('port'),function(){
+}).listen(port,function(){
     console.log("%c Server running", "color: green");
     console.log('app is running server is listening on port',app.get('port'))
 });
