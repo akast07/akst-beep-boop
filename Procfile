@@ -1,2 +1,2 @@
-web: PORT=$PORT node bot.js
+web:node bot.js
 worker:node bot.js
