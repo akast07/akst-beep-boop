@@ -167,9 +167,10 @@ app.set('port',port);
 console.log(process.env.PORT);
 console.log(port);
 
-app.get('/index',(req,res)=>{
+app.get('/',(req,res)=>{
     console.log("app is running");
-    res.sendFile('google11b051fd7dcd2c7e.html',{root:__dirname});
+    res.sendFile(path.join(__dirname + '/index.html'));
+
 }).listen(app.get('port'),function(){
     console.log("%c Server running", "color: green");
     console.log('app is running server is listening on port',app.get('port'))
