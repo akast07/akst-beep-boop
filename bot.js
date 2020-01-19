@@ -20,7 +20,9 @@ const synth = require('synth-js');
 //-------------------------------------------------------------------
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
-//initialize bot
+//----------server settings ------------------
+
+//---------initialize bot----------
 const client = new Discord.Client();
 //logger settings 
 logger.remove(logger.transports.Console);
@@ -60,19 +62,6 @@ client.on('message', message => {
             let intervalDescription;
 
             //-------melody test ----------
-            let MELODY1 = { notes: [
-                {pitch: toMidi('A3','C#3','G#3'), quantizedStartStep: 0, quantizedEndStep: 4}, //0 to 4 beats
-                {pitch: toMidi('D4'), quantizedStartStep: 4, quantizedEndStep: 6}, //4 - 6
-                {pitch: toMidi('E4'), quantizedStartStep: 6, quantizedEndStep: 8},  //etc
-                {pitch: toMidi('F4'), quantizedStartStep: 8, quantizedEndStep: 10}, 
-                {pitch: toMidi('D4'), quantizedStartStep: 10, quantizedEndStep: 12},
-                {pitch: toMidi('E4'), quantizedStartStep: 12, quantizedEndStep: 16},
-                {pitch: toMidi('C4'), quantizedStartStep: 16, quantizedEndStep: 20},
-                {pitch: toMidi('D4'), quantizedStartStep: 20, quantizedEndStep: 26},
-                {pitch: toMidi('A3'), quantizedStartStep: 26, quantizedEndStep: 28},
-                {pitch: toMidi('A3'), quantizedStartStep: 28, quantizedEndStep: 32}
-            ]};
-
             //midi2Wave(midiFile);
 
         }
@@ -83,11 +72,6 @@ client.on('message', message => {
                 let exampleEmbed = populateEmbed(res);
                 message.channel.send(exampleEmbed);
             });
-            /*
-            //populate embed
-            let exampleEmbed = populateEmbed(result);
-            message.channel.send(exampleEmbed);
-            */
         }
     }
 });
@@ -137,7 +121,7 @@ async function runSample(messageText){
 };
 
     //---------embed population
-    function populateEmbed(result){
+function populateEmbed(result){
         console.log(''+result+'');
         //----------embedding formatting
         // inside a command, event listener, etc.
@@ -160,10 +144,9 @@ async function runSample(messageText){
         //.setFooter('2020', 'https://i.imgur.com/wSTFkRM.png');
 
         return exampleEmbed;
-    }
+}
 
 //-------- music----------
-
 let midi2Wave = (midiFile) =>{
 
     let midiBuffer = fs.readFileSync(midiFile);
