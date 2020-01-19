@@ -1,5 +1,5 @@
 //---------global--------------
-let dotenv = require('dotenv').config();
+let dotenv = require('dotenv').config({silent: true});
 const fs = require('fs');
 let path = require('path');
 let logger = require('winston');
