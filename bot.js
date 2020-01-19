@@ -161,7 +161,7 @@ let textParseChord = () =>{
 }
 
 //------webpage----------
-let port = process.env.PORT || '0.0.0.0';
+let port = process.env.PORT;
 app.set('port',port);
 
 console.log(process.env.PORT);
