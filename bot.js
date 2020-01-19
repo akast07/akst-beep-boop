@@ -1,5 +1,5 @@
 //---------global--------------
-let dotenv = require('dotenv').config({silent: true});
+const CONCURRENCY = process.env.WEB_CONCURRENCY || 1;
 const fs = require('fs');
 let path = require('path');
 let logger = require('winston');
@@ -30,9 +30,6 @@ logger.add(new logger.transports.Console(),{
     colorize:true
 });
 logger.level = 'debug';
-//dotenv check
-//fails on cloud
-//if(dotenv.error){ throw dotenv.error;}
 
 //------discord channel properties 
 client.on('ready', () => {
@@ -77,11 +74,7 @@ client.on('message', message => {
     }
 });
 
-//-----discord login
-const TOKEN = process.env.TOKEN;
-client.login(TOKEN).catch((err) =>{
-    console.log(err);
-});
+
 
 //--------dialogflow reqres
 async function runSample(messageText){
@@ -162,10 +155,15 @@ let textParseChord = () =>{
 }
 
 //------webpage----------
-let port = process.env.PORT;
+let port = process.env.PORT || 3000;
+let nodeEnv = process.env.NODE_ENV;
+if (nodeEnv !== 'production') { 
+    console.log("RUNNING ON LOCALHOST : " + nodeEnv);
+    require('dotenv').config({silent: true});
+}
 // app.set('port',port);
 // console.log(process.env.PORT);
-// console.log(port);
+console.log('----------->PORT BOUND :'+port);
 
 app.get('/',(req,res)=>{
     console.log("app is running");
@@ -173,12 +171,20 @@ app.get('/',(req,res)=>{
 
 }).listen(port,function(){
     console.log("%c Server running", "color: green");
-    console.log('app is running server is listening on port',app.get('port'))
+    console.log('app is running server is listening on port',app.get('port'));
 });
 
-keepAlive({
-    time:90, //in minutes?
-    callback: function(error, response, body) {
-        console.log('still alive');
-      }
-},app);
+
+//-----discord login
+const TOKEN = process.env.TOKEN;
+client.login(TOKEN).catch((err) =>{
+    console.log(err);
+});
+
+//only run after initial 90min
+// keepAlive({
+//     time:90, //in minutes?
+//     callback: function(error, response, body) {
+//         console.log('still alive');
+//       }
+// },app); //function,milliseconds
