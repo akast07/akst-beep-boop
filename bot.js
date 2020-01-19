@@ -31,7 +31,7 @@ logger.add(new logger.transports.Console(),{
 });
 logger.level = 'debug';
 //dotenv check
-if(dotenv.error){ throw result.error;}
+if(dotenv.error){ throw dotenv.error;}
 
 //------discord channel properties 
 client.on('ready', () => {
