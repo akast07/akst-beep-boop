@@ -1,2 +1,5 @@
 #IGNORE EVERYTHING HERE; BTW THIS IS A COMMENT
-.env
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env
