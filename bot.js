@@ -167,7 +167,7 @@ app.set('port',port);
 console.log(process.env.PORT);
 console.log(port);
 
-app.get('/',(req,res)=>{
+app.get('/index',(req,res)=>{
     console.log("app is running");
     res.sendFile('google11b051fd7dcd2c7e.html',{root:__dirname});
 }).listen(app.get('port'),function(){
