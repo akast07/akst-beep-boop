@@ -24,7 +24,6 @@
     "node-keepalive": "0.0.1",
     "opusscript": "0.0.7",
     "redis": "^2.8.0",
-    "synth-js": "^0.1.1",
     "uuid": "^3.4.0",
     "winston": "^3.2.1"
   },

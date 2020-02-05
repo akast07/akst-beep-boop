@@ -4,9 +4,9 @@ const fs = require('fs');
 let path = require('path');
 let logger = require('winston');
 const Discord = require('discord.js');
-//-----gooogle dialog
+//-----gooogle dialog---------
 let dialogflow = require('dialogflow').v2beta1;
-//------random 32byte hash
+//------random 32byte hash-------------
 const uuid = require('uuid');
 const sessionId = uuid.v4();
 //----webapp-------
@@ -15,13 +15,10 @@ let app = express();
 let keepAlive = require("node-keepalive");
 //let redClient = require('redis').createClient(process.env.REDIS_URL);
 
-//----------synth midi to wav-----
-const synth = require('synth-js');
 //-------------------------------------------------------------------
 app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 //----------server settings ------------------
-
 //---------initialize bot----------
 const client = new Discord.Client();
 //logger settings 
@@ -31,13 +28,15 @@ logger.add(new logger.transports.Console(),{
 });
 logger.level = 'debug';
 
-//------discord channel properties 
+//------discord channel properties ----------
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
 
 client.on('message', message => {
     let messageText = message.content.substring(1);
+    const emojiList = message.guild.emojis.map((e, x) => (x + ' = ' + e) + ' | ' +e.name).join('\n');
+
     if (messageText == null) return; //empty queries
 
     //---bot check----
@@ -48,20 +47,34 @@ client.on('message', message => {
         return;
     }
 
-    //if help show options
+    //if help show options😀
 
-    //read message, post response
+    //read message, post response based on first character being a question mark
     if (message.content.indexOf('?') === 0) {
+        //breakdown the rest of the musical string
         //music parse or e.g. ??(bpm=95(4/4)Ebmaj7/2 - Dbsus9/2 -Bmaj7/4)
         if ((message.content.indexOf('?') === 1) && (message.content.indexOf('(') === 2)) {
-            //breakdown the rest of the musical string
             let bpm;
             let timeSignature;
             let intervalDescription;
-
             //-------melody test ----------
             //midi2Wave(midiFile);
-
+        }
+        //--------TRIGGER HELP ---------------
+        else if((message.content.indexOf('h') === 1) && (message.content.indexOf('e')===2) && (message.content.indexOf('l')===3) &&(message.content.indexOf('p')===4)){
+            let resObj = {fulfillmentText:"HELP",queryText:"Help can do this \nHelp can do something else\nHelp"};
+            //make object here for embed
+            let helpEmbed = populateEmbed(resObj);
+            let e; //emoji
+            message.channel.send(helpEmbed);
+            message.react(e);
+        }
+        //------------AYY LOL --------
+        else if((message.content.indexOf('a') === 1) && (message.content.indexOf('y') === 2)){
+            message.react('😄');
+            let resObj ={fulfillmentText:"lol \:smile:",queryText:"xD"};
+            let lolEmbed = populateEmbed(resObj);
+            message.channel.send(lolEmbed);
         }
         else {
             //dailogflow query
@@ -76,7 +89,7 @@ client.on('message', message => {
 
 
 
-//--------dialogflow reqres
+//--------dialogflow reqres----------
 async function runSample(messageText){
     let config ={
         credentials:{
@@ -114,7 +127,7 @@ async function runSample(messageText){
     }
 };
 
-    //---------embed population
+//---------embed population----------
 function populateEmbed(result){
         console.log(''+result+'');
         //----------embedding formatting
@@ -125,7 +138,7 @@ function populateEmbed(result){
         .setTitle(`${result.fulfillmentText}`)
         //.setURL('https://discord.js.org/')
         //.setAuthor(`${result.}`, 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
-        .setDescription(`question : ${result.queryText}`)
+        .setDescription(`\n${result.queryText}`)
         //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
         //.addField('Regular field title', 'Some value here')
         //.addBlankField()
@@ -138,20 +151,6 @@ function populateEmbed(result){
         //.setFooter('2020', 'https://i.imgur.com/wSTFkRM.png');
 
         return exampleEmbed;
-}
-
-//-------- music----------
-let midi2Wave = (midiFile) =>{
-
-    let midiBuffer = fs.readFileSync(midiFile);
-    let wavBuffer = synth.midiToWav(midiBuffer).toBuffer();    // convert midi buffer to wav buffer
-
-    //instead of writing locally write to the db
-    fs.writeFileSync(path.basename+".wav", wavBuffer, {encoding: 'binary'});
-}
-
-//parse message text to Chord progression
-let textParseChord = () =>{
 }
 
 //------webpage----------
